@@ -1,16 +1,16 @@
 import psycopg2
+from dotenv import load_dotenv
+import os
 
-# Paste your Neon connection string here (keep the quotes)
-CONNECTION_STRING = "postgresql://YOUR_STRING_HERE"
-
-# Open a connection to the database
-conn = psycopg2.connect(CONNECTION_STRING)
+# Load DATABASE_URL from your .env file
+load_dotenv()
+conn = psycopg2.connect(os.getenv("DATABASE_URL"))
 
 # A cursor lets you send SQL commands
 cursor = conn.cursor()
 
-# Run a query
-cursor.execute("SELECT * FROM customer;")
+# --- Swap in any query from the Query Reference section ---
+cursor.execute("SELECT c.company_name, SUM(i.total_amount) AS total_billed FROM invoice i JOIN customer c ON i.customer_id = c.customer_id GROUP BY c.company_name ORDER BY total_billed DESC; ")
 
 # Fetch and print every row returned
 rows = cursor.fetchall()
