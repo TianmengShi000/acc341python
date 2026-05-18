@@ -11,7 +11,7 @@ VALUES (9999, (SELECT invoice_id FROM invoice LIMIT 1), 100.00, CURRENT_DATE);
 -- Error message Neon returned:
 -- ERROR: insert or update on table "payment_application"
 -- violates foreign key constraint "fk_app_payment"
--- DETAIL: Key (payment_id)=(9999) is not present in table "payment".
+-- (SQLSTATE 23503)
 
 
 -- =====================================================================
@@ -22,8 +22,8 @@ VALUES (1, 1, -50.00, CURRENT_DATE);
 
 -- Error message Neon returned:
 -- ERROR: new row for relation "payment_application"
--- violates check constraint "..."
--- DETAIL: Failing row contains (..., -50.00, ...).
+-- violates check constraint "payment_application_amount_applied_check"
+-- (SQLSTATE 23514)
 
 
 -- =====================================================================
@@ -33,5 +33,6 @@ INSERT INTO payment (customer_id, payment_date, payment_method, amount_received,
 VALUES (1, CURRENT_DATE, 'Bitcoin', 500.00, 'BTC-TEST-001');
 
 -- Error message Neon returned:
--- ERROR: new row for relation "payment" 
+-- ERROR: new row for relation "payment"
 -- violates check constraint "payment_payment_method_check"
+-- (SQLSTATE 23514)
